@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Employee Attendance</title>
+  </head>
+  <body>
+    <h1>Employee Attendance</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          <td>{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+          <td>{{ row[2] }}</td>
+          <td>{{ row[3] }}</td>
+          <td>
+            <a href="/edit_attendance/{{ row[0] }}">Edit</a>
+            <a href="/delete_attendance/{{ row[0] }}">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br>
+    <a href="/add_attendance">Add Attendance</a>
+  </body>
+</html>
