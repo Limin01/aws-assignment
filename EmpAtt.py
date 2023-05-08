@@ -1,21 +1,28 @@
+from Flask import Flask, render_template, request, redirect
 import sqlite3
-from flask import Flask, render_template, request, redirect
+from pymysql import connections
+import boto3
+from config import *
 
 app = Flask(__name__)
-conn = sqlite3.connect('attendance.db')
-c = conn.cursor()
 
-# create table if it doesn't exist
-c.execute('''CREATE TABLE IF NOT EXISTS attendance
-             (id INTEGER PRIMARY KEY,
-              name TEXT NOT NULL,
-              date TEXT NOT NULL,
-              status TEXT NOT NULL)''')
-conn.commit()
+bucket = custombucket
+region = customregion
+
+db_conn = connections.Connection(
+    host=customhost,
+    port=3306,
+    user=customuser,
+    password=custompass,
+    db=customdb
+
+)
+output = {}
+table = 'employee'
 
 @app.route('/')
 def EmpAtt():
-    c.execute("SELECT * FROM attendance")
+    c.execute("SELECT * FROM employee")
     rows = c.fetchall()
     return render_template('EmpAtt.html', rows=rows)
 
@@ -49,4 +56,4 @@ def delete_attendance(id):
     return redirect('/')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)
